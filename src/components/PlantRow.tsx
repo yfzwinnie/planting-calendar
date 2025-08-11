@@ -6,16 +6,26 @@ interface PlantDetails {
   harvest: string[];
 }
 
-interface Month {
-  [index: number]: string;
-}
-
 interface Props {
   plant: PlantDetails;
-  months: Month[];
+  months: string[];
 }
 
 const PlantRow = ({ plant, months }: Props) => {
+  const colorCell = (plant: PlantDetails, month: string) => {
+    if (plant.sowIndoor.includes(month)) {
+      return "bg-red-100 dark:bg-red-800";
+    } else if (plant.sowOutdoor.includes(month)) {
+      return "bg-green-100 dark:bg-green-800";
+    } else if (plant.transplant.includes(month)) {
+      return "bg-gray-100 dark:bg-gray-800";
+    } else if (plant.harvest.includes(month)) {
+      return "bg-yellow-100 dark:bg-yellow-800";
+    } else {
+      return "bg-white dark:bg-gray-900";
+    }
+  };
+
   return (
     <>
       <th
@@ -24,9 +34,9 @@ const PlantRow = ({ plant, months }: Props) => {
       >
         {plant.name}
       </th>
-      {Object.keys(months).map((month) => {
-        <td key={month}></td>;
-      })}
+      {months.map((month) => (
+        <td key={month} className={colorCell(plant, month)}></td>
+      ))}
     </>
   );
 };
